@@ -1,14 +1,91 @@
-Fine-Tuning gpt-4.1-nano for Software Requirement Classification1. OverviewThis project demonstrates the process of fine-tuning the gpt-4.1-nano model to improve its accuracy in classifying software requirements into "functional" and "non-functional" categories. The initial tests showed that the base model struggled with this specific task, and fine-tuning was employed as a strategy to enhance its performance on this specialized domain.The repository includes scripts for data preparation and for evaluating the model's accuracy both before and after the fine-tuning process.2. The Results: A Significant ImprovementThe primary goal of this project was to increase the model's accuracy. The results clearly show the success of the fine-tuning process.Model VersionCorrect ClassificationsTotal RequirementsAccuracyBase gpt-4.1-nano6210757.94%Fine-Tuned Model587181.69%The fine-tuned model, ft:gpt-4.1-nano-2025-04-14:ita:leonardo-valle-102087-ga-ita-br:CBiDAYf5, achieved an accuracy of 81.69%, a dramatic improvement over the base model's 57.94%.3. Repository ContentsThis repository contains the following Python scripts:excel_to_jsonl_converter.py: A utility script to convert datasets from an Excel file (.xlsx) into the JSON Lines (.jsonl) format required for OpenAI's fine-tuning process. It handles mapping categorical values (like 0 and 1) to string labels ("non-functional" and "functional").tuned_accuracy_checker.py: The main script for evaluating the performance of a fine-tuned model. It reads a test dataset, sends each requirement to the specified model via the OpenAI API, and compares the model's prediction with the correct answer to calculate the final accuracy.4. How to Replicate This ProjectFollow these steps to set up the environment and run the evaluation on your own fine-tuned model.Step 1: PrerequisitesPython 3.7 or higherAn Excel file with your dataset (e.g., dataset-test2.xlsx) containing 'Requisito' (Requirement) and 'Categoria' (Category) columns.Step 2: Clone the Repositorygit clone <your-repository-url>
+# Fine-Tuning gpt-4.1-nano for Software Requirement Classification
+
+## 1. Overview
+This project demonstrates the process of fine-tuning the **gpt-4.1-nano** model to improve its accuracy in classifying software requirements into **"functional"** and **"non-functional"** categories.  
+
+The initial tests showed that the base model struggled with this specific task, and fine-tuning was employed as a strategy to enhance its performance on this specialized domain.  
+
+The repository includes scripts for data preparation and for evaluating the model's accuracy both before and after the fine-tuning process.
+
+---
+
+## 2. The Results: A Significant Improvement
+The primary goal of this project was to increase the model's accuracy. The results clearly show the success of the fine-tuning process.
+
+| Model Version      | Correct Classifications | Total Requirements | Accuracy |
+|--------------------|-------------------------|--------------------|----------|
+| Base gpt-4.1-nano | 62                      | 107                | 57.94%   |
+| Fine-Tuned Model   | 87                      | 107                | 81.69%   |
+
+The fine-tuned model:  
+`ft:gpt-4.1-nano-2025-04-14:ita:leonardo-valle-102087-ga-ita-br:CBiDAYf5`  
+achieved an accuracy of **81.69%**, a dramatic improvement over the base model's **57.94%**.
+
+---
+
+## 3. Repository Contents
+This repository contains the following Python scripts:
+
+- **excel_to_jsonl_converter.py**:  
+  A utility script to convert datasets from an Excel file (.xlsx) into the JSON Lines (.jsonl) format required for OpenAI's fine-tuning process.  
+  It handles mapping categorical values (like `0` and `1`) to string labels ("non-functional" and "functional").
+
+- **tuned_accuracy_checker.py**:  
+  The main script for evaluating the performance of a fine-tuned model.  
+  It reads a test dataset, sends each requirement to the specified model via the OpenAI API, and compares the model's prediction with the correct answer to calculate the final accuracy.
+
+---
+
+## 4. How to Replicate This Project
+
+### Step 1: Prerequisites
+- Python 3.7 or higher  
+- An Excel file with your dataset (e.g., `dataset-test2.xlsx`) containing **Requisito** (Requirement) and **Categoria** (Category) columns.
+
+### Step 2: Clone the Repository
+```bash
+git clone <your-repository-url>
 cd <your-repository-name>
-Step 3: Install DependenciesInstall the necessary Python libraries using pip.pip install pandas openpyxl openai
-Step 4: Prepare Your DataIf your training/testing data is in an Excel file, use the conversion script to create the .jsonl file.Place your .xlsx file in the project directory.Make sure the column names in the script match your Excel file (or update the script).Run the converter:python excel_to_jsonl_converter.py
-This will generate a dataset-convertido.jsonl file, which you can use for fine-tuning or testing.Step 5: Configure the Accuracy CheckerOpen the tuned_accuracy_checker.py script and update the following configuration variables at the top of the file:# 1. Paste your OpenAI API key.
+````
+
+### Step 3: Install Dependencies
+Install the necessary Python libraries using pip:
+
+```bash
+pip install pandas openpyxl openai
+````
+---
+
+### Step 4: Prepare Your Data
+If your training/testing data is in an Excel file, use the conversion script to create the `.jsonl` file.
+
+1. Place your `.xlsx` file in the project directory.  
+2. Make sure the column names in the script match your Excel file (or update the script).  
+3. Run the converter:
+
+```bash
+python excel_to_jsonl_converter.py
+```
+---
+
+### Step 5: Configure the Accuracy Checker
+Open the `tuned_accuracy_checker.py` script and update the following configuration variables at the top of the file:
+
+```python
+# 1. Paste your OpenAI API key.
 API_KEY = "sk-..."
+---
+```
+
+### Step 6: Run the Evaluation
+Execute the script from your terminal to start the evaluation process:
+
+```bash
+python tuned_accuracy_checker.py
 
 # 2. Paste the full ID of your fine-tuned model.
 FINE_TUNED_MODEL_ID = "ft:gpt-4.1-nano-..."
 
 # 3. Set the name of your test dataset file.
 TEST_DATASET_FILE = 'dataset-convertido.jsonl'
-Step 6: Run the EvaluationExecute the script from your terminal to start the evaluation process.python tuned_accuracy_checker.py
-The script will process each requirement in your test file and print the final accuracy report.5. LicenseThis project is licensed under the MIT License. See the LICENSE file for details.
+```
